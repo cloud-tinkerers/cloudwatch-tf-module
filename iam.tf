@@ -10,6 +10,10 @@ data "aws_iam_policy_document" "read_parameter" {
     ]
     resources = ["${aws_ssm_parameter.discord_webhook.arn}"]
   }
+  statement {
+    actions = ["cloudwatch:GetMetricStatistics"]
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_policy" "read_parameter" {
@@ -18,8 +22,8 @@ resource "aws_iam_policy" "read_parameter" {
   policy = data.aws_iam_policy_document.read_parameter.json
 }
 
-resource "aws_iam_role" "notifier_lambda" {
-  name = "notifier_lambda"
+resource "aws_iam_role" "general_lambda" {
+  name = "general_lambda"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -37,11 +41,11 @@ resource "aws_iam_role" "notifier_lambda" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_execution" {
-  role       = aws_iam_role.notifier_lambda.name
+  role       = aws_iam_role.general_lambda.name
   policy_arn = data.aws_iam_policy.lambda_execution.arn
 }
 
 resource "aws_iam_role_policy_attachment" "read_parameter" {
-  role       = aws_iam_role.notifier_lambda.name
+  role       = aws_iam_role.general_lambda.name
   policy_arn = aws_iam_policy.read_parameter.arn
 }

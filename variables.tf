@@ -12,3 +12,8 @@ variable "env" {
   type = string
   description = "The environment in use"
 }
+
+variable "region" {
+    type = string
+    description = "The AWS region being used."
+}

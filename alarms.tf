@@ -1,7 +1,3 @@
-data "aws_autoscaling_group" "asg" {
-  name = "${var.client}-${var.app}-${var.env}-asg"
-}
-
 resource "aws_cloudwatch_metric_alarm" "cpu" {
   alarm_name                = "HighCPUUtilisation"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
