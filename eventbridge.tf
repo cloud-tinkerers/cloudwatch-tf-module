@@ -32,24 +32,7 @@ data "aws_iam_policy" "AmazonEventBridgeSchedulerFullAccess" {
   name = "AmazonEventBridgeSchedulerFullAccess"
 }
 
-data "aws_iam_policy_document" "invoke_lambda" {
-  statement {
-    actions = ["lambda:InvokeFunction"]
-    resources = ["${aws_lambda_function.health_report.arn}"]
-  }
-}
-
-resource "aws_iam_policy" "invoke_lambda" {
-  name = "invoke_lambda"
-  policy = data.aws_iam_policy_document.invoke_lambda.json
-}
-
 resource "aws_iam_role_policy_attachment" "scheduler_access" {
   policy_arn = data.aws_iam_policy.AmazonEventBridgeSchedulerFullAccess.arn
-  role       = aws_iam_role.health_report_event.name
-}
-
-resource "aws_iam_role_policy_attachment" "invoke_lambda" {
-  policy_arn = aws_iam_policy.invoke_lambda.arn
   role       = aws_iam_role.health_report_event.name
 }

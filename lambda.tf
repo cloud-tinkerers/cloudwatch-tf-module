@@ -67,3 +67,11 @@ resource "aws_lambda_function" "health_report" {
     }
   }
 }
+
+resource "aws_lambda_permission" "health_report" {
+  statement_id  = "AllowExecutionFromEventBridge"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.health_report.function_name
+  principal     = "scheduler.amazonaws.com"
+  source_arn    = aws_scheduler_schedule.health_report.arn
+}

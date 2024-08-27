@@ -6,6 +6,8 @@ This module:
 * sets up an SNS topic for cloudwatch alarms to trigger
 * sets up a cloudwatch alarm for high CPU on the ASG
 * sets up a lambda function that is triggered by the SNS topic
+* sets up a lambda health report function that reports on ASG and RDS metrics
+* sets up an eventbridge schedule to trigger the health report
 
 The lambda function takes the incoming event and posts a request to the discord webhook, this sends an alert to the monitoring channel.
 
